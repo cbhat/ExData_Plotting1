@@ -5,8 +5,7 @@ coal <- subset(NEI, grepl("Coal|anthracite|charcoal|lignite|peat|bituminous", Sh
 merge_SCC <- merge( SCC, coal, SCC.SCC=coal.SCC)
 
 combustion <- subset( merge_SCC, grepl("Combustion", SCC.Level.One, ignore.case=TRUE))
- agg_combustion <- aggregate(combustion$Emissions,  by = list(year= combustion$year,category1=combustion$SCC.Level.One, category2=combustion$SCC.Level.Two), FUN=sum)
-p4 <- qplot(year ,x, data=agg_combustion, facets=.~category1, col=category2, ylab="Emissions ", main="Coal Usage across different Segments") + geom_smooth()
-p4
-ggsave('plot4.png',height=5, width=8,p4)
+ agg_combustion <- aggregate(combustion$Emissions,  by = list(year= combustion$year, category=combustion$SCC.Level.Two), FUN=sum)
+print(qplot(year ,y=x, data=agg_combustion,  col=category, ylab="Emissions ", main="Coal Usage across different Categories" )+ geom_line() ) 
+dev.copy(png,'plot4.png',width=680,height=480)
 dev.off()
